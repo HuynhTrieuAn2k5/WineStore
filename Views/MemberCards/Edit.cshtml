@@ -1,0 +1,58 @@
+@model MemberCard
+@{ ViewData["Title"] = "Sửa thẻ thành viên"; }
+
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <div class="card-header">
+        <h2>Sửa thẻ thành viên</h2>
+    </div>
+    <form asp-action="Edit" method="post" style="padding: 1.5rem;">
+        <input type="hidden" asp-for="CardId" />
+        
+        <div class="form-group">
+            <label>Khách hàng</label>
+            <input type="text" class="form-control" value="@Model.Customer?.FullName" disabled />
+        </div>
+        
+        <div class="form-group">
+            <label>Số thẻ</label>
+            <input type="text" class="form-control" value="@Model.CardNumber" disabled />
+        </div>
+
+        <div class="form-group" style="display: flex; gap: 1rem;">
+            <div style="flex: 1;">
+                <label asp-for="CardType">Loại thẻ *</label>
+                <select asp-for="CardType" class="form-control">
+                    <option value="silver">Bạc</option>
+                    <option value="gold">Vàng</option>
+                    <option value="platinum">Bạch Kim</option>
+                    <option value="diamond">Kim Cương</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label asp-for="Status">Trạng thái *</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="active">Đang hoạt động</option>
+                    <option value="expired">Hết hạn</option>
+                    <option value="cancelled">Hủy</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" style="display: flex; gap: 1rem;">
+            <div style="flex: 1;">
+                <label>Ngày cấp</label>
+                <input asp-for="IssueDate" type="date" class="form-control" disabled />
+            </div>
+            <div style="flex: 1;">
+                <label asp-for="ExpiryDate">Ngày hết hạn *</label>
+                <input asp-for="ExpiryDate" type="date" class="form-control" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn-primary">Lưu thay đổi</button>
+            <a asp-action="Index" class="btn-outline">Hủy</a>
+        </div>
+    </form>
+</div>

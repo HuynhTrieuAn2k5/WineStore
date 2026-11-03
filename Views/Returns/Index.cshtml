@@ -1,0 +1,6 @@
+@model IEnumerable<Return>
+@{ ViewData["Title"] = "Đổi / trả hàng"; }
+<h1>Đổi / trả hàng</h1>
+<table class="table"><thead><tr><th>Hóa đơn</th><th>Ngày</th><th>Người xử lý</th><th>Hoàn tiền</th><th>Trạng thái</th></tr></thead><tbody>
+@foreach (var item in Model) {<tr><td>@item.Invoice?.InvoiceNumber</td><td>@item.ReturnDate.ToString("dd/MM/yyyy")</td><td>@item.ProcessedByUser?.FullName</td><td>@String.Format("{0:N0} đ", item.RefundAmount)</td><td>@item.Status</td></tr>}
+</tbody></table>

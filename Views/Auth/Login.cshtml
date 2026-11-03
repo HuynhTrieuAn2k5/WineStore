@@ -1,0 +1,33 @@
+@model ChilliquerAspNetCore.ViewModels.Auth.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Chilliquer</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+<div class="login-page">
+    <form asp-action="Login" method="post" class="login-card">
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div class="login-logo">🍷</div>
+        <h1>Chilliquer</h1>
+        <p>Quản lý bán hàng cửa hàng rượu</p>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <label asp-for="Username"></label>
+        <input asp-for="Username" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <button class="btn-primary" type="submit">Đăng nhập</button>
+        <small>Tài khoản mẫu: admin / Admin@123</small>
+    </form>
+</div>
+</body>
+</html>

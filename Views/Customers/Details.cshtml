@@ -1,0 +1,3 @@
+@model Customer
+@{ ViewData["Title"] = "Chi tiết khách hàng"; }
+<div class="card"><h1>@Model.FullName</h1><p><b>CCCD:</b> @Model.Cccd</p><p><b>SĐT:</b> @Model.Phone</p><p><b>Email:</b> @Model.Email</p><p><b>Thẻ:</b> @Model.MemberCard?.CardNumber</p></div>

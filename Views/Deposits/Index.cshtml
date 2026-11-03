@@ -1,0 +1,6 @@
+@model IEnumerable<Deposit>
+@{ ViewData["Title"] = "Đặt cọc"; }
+<h1>Đặt cọc</h1>
+<table class="table"><thead><tr><th>Khách hàng</th><th>Hóa đơn</th><th>Số tiền</th><th>Ngày hẹn</th><th>Trạng thái</th></tr></thead><tbody>
+@foreach (var item in Model) {<tr><td>@item.Customer?.FullName</td><td>@item.Invoice?.InvoiceNumber</td><td>@String.Format("{0:N0} đ", item.DepositAmount)</td><td>@item.ExpectedPickup.ToString("dd/MM/yyyy")</td><td>@item.Status</td></tr>}
+</tbody></table>

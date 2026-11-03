@@ -1,0 +1,55 @@
+@model IEnumerable<StockBatch>
+@{
+    ViewData["Title"] = "Kho hàng";
+}
+<div class="page-title">
+    <h1>Lô nhập kho</h1>
+    <div style="display: flex; gap: 10px;">
+        <a class="btn-outline" asp-action="StockWarning">⚠️ Cảnh báo tồn kho</a>
+        <a class="btn-primary" asp-action="Import">Nhập kho mới</a>
+    </div>
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert-success">✅ @TempData["SuccessMessage"]</div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ngày nhập</th>
+            <th>Sản phẩm</th>
+            <th>Vị trí</th>
+            <th>SL nhập</th>
+            <th>Còn lại</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var statusClass = item.Status switch
+            {
+                "active" => "status-active",
+                "expired" => "status-expired",
+                "damaged" => "status-expired",
+                _ => "status-default"
+            };
+            var statusLabel = item.Status switch
+            {
+                "active" => "Đang dùng",
+                "expired" => "Hết hạn",
+                "liquidated" => "Thanh lý",
+                "damaged" => "Hư hỏng",
+                _ => item.Status
+            };
+            <tr>
+                <td>@item.ImportDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.Product?.Name</td>
+                <td>@item.Location?.LocationCode</td>
+                <td>@item.QuantityIn</td>
+                <td>@item.QuantityRemain</td>
+                <td><span class="@statusClass">@statusLabel</span></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+@model ChilliquerAspNetCore.ViewModels.Products.ProductFormViewModel
+@{ ViewData["Title"] = "Sửa sản phẩm"; }
+<h1>Sửa sản phẩm</h1>
+<form method="post" enctype="multipart/form-data" class="card">
+
+<div class="form-grid">
+    <div><label asp-for="ProductCode"></label><input asp-for="ProductCode" /><span asp-validation-for="ProductCode" class="text-danger"></span></div>
+    <div><label asp-for="Name"></label><input asp-for="Name" /><span asp-validation-for="Name" class="text-danger"></span></div>
+    <div><label asp-for="CategoryId"></label><select asp-for="CategoryId" asp-items="Model.Categories"></select></div>
+    <div><label asp-for="ManufacturerId"></label><select asp-for="ManufacturerId" asp-items="Model.Manufacturers"></select></div>
+    <div><label asp-for="SupplierId"></label><select asp-for="SupplierId" asp-items="Model.Suppliers"></select></div>
+    <div><label asp-for="Origin"></label><input asp-for="Origin" /></div>
+    <div><label asp-for="VolumeMl"></label><input asp-for="VolumeMl" /></div>
+    <div><label asp-for="AlcoholPct"></label><input asp-for="AlcoholPct" /></div>
+    <div><label asp-for="SellPrice"></label><input asp-for="SellPrice" /></div>
+    <div><label asp-for="MinStockAlert"></label><input asp-for="MinStockAlert" /></div>
+    <div class="col-span">
+        <label asp-for="ImageUpload"></label>
+        @if(!string.IsNullOrEmpty(Model.ImageUrl)) {
+            <div style="margin-bottom:10px;"><img src="@Model.ImageUrl" style="max-height:100px; border-radius:10px;" /></div>
+        }
+        <input type="file" asp-for="ImageUpload" accept="image/*" style="padding: 10px;" />
+        <input type="hidden" asp-for="ImageUrl" />
+    </div>
+</div>
+<button class="btn-primary" type="submit">Lưu</button>
+<a class="btn-link" asp-action="Index">Quay lại</a>
+
+</form>

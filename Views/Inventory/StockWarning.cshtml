@@ -1,0 +1,62 @@
+@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Cảnh báo tồn kho";
+}
+<div class="page-title">
+    <h1>⚠️ Cảnh báo tồn kho</h1>
+    <a class="btn-primary" asp-action="Import">Nhập kho ngay</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card" style="text-align: center; padding: 60px 20px;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">✅</div>
+        <h2 style="color: var(--wine); margin: 0 0 8px;">Kho hàng ổn định</h2>
+        <p style="color: var(--muted);">Tất cả sản phẩm đều còn đủ tồn kho.</p>
+    </div>
+}
+else
+{
+    <div class="stock-warning-grid">
+        @foreach (var item in Model)
+        {
+            var percentage = item.MinStockAlert > 0
+                ? Math.Min((double)item.StockQuantity / item.MinStockAlert * 100, 100)
+                : 0;
+            var severityClass = item.StockQuantity == 0 ? "severity-critical"
+                : item.StockQuantity <= item.MinStockAlert / 2 ? "severity-high"
+                : "severity-medium";
+            var severityLabel = item.StockQuantity == 0 ? "Hết hàng"
+                : item.StockQuantity <= item.MinStockAlert / 2 ? "Sắp hết"
+                : "Cần nhập thêm";
+            <div class="card stock-warning-card @severityClass">
+                <div class="stock-warning-header">
+                    <div>
+                        <span class="stock-warning-badge">@severityLabel</span>
+                        <h3>@item.Name</h3>
+                        <small>@item.ProductCode • @item.Category?.CategoryName</small>
+                    </div>
+                </div>
+                <div class="stock-warning-body">
+                    <div class="stock-numbers">
+                        <div class="stock-current">
+                            <span class="stock-value">@item.StockQuantity</span>
+                            <span class="stock-label">Tồn kho</span>
+                        </div>
+                        <div class="stock-divider">|</div>
+                        <div class="stock-min">
+                            <span class="stock-value">@item.MinStockAlert</span>
+                            <span class="stock-label">Tối thiểu</span>
+                        </div>
+                    </div>
+                    <div class="stock-bar-container">
+                        <div class="stock-bar" style="width: @percentage%"></div>
+                    </div>
+                </div>
+                <div class="stock-warning-footer">
+                    <a class="btn-primary" asp-action="Import" style="font-size: 0.85rem; padding: 8px 14px;">Nhập thêm</a>
+                </div>
+            </div>
+        }
+    </div>
+}

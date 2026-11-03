@@ -1,0 +1,44 @@
+@{ ViewData["Title"] = "Báo cáo"; }
+<h1>Báo cáo năm @ViewBag.Year</h1>
+<form method="get" class="toolbar"><input name="year" value="@ViewBag.Year" /><button>Xem</button></form>
+<div class="grid cards">
+    <div class="card stat"><span>Doanh thu</span><strong>@String.Format("{0:N0} đ", ViewBag.TotalRevenue)</strong></div>
+    <div class="card stat"><span>Số hóa đơn</span><strong>@ViewBag.InvoiceCount</strong></div>
+    <div class="card stat"><span>Cảnh báo tồn kho</span><strong>@ViewBag.StockWarnings</strong></div>
+</div>
+
+@if (ViewBag.IsAdmin == true)
+{
+    <div class="card" style="margin-top: 20px;">
+        <h3 style="margin-top: 0;">Biểu đồ doanh thu năm @ViewBag.Year</h3>
+        <canvas id="revenueChart" width="400" height="150"></canvas>
+    </div>
+
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const data = @Html.Raw(ViewBag.MonthlyRevenue);
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Doanh thu (đ)',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    }
+}

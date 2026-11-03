@@ -1,0 +1,7 @@
+@model IEnumerable<Customer>
+@{ ViewData["Title"] = "Khách hàng"; }
+<div class="page-title"><h1>Khách hàng</h1><a class="btn-primary" asp-action="Create">Thêm khách hàng</a></div>
+<form method="get" class="toolbar"><input name="keyword" value="@ViewBag.Keyword" placeholder="Tên, CCCD hoặc SĐT..." /><button>Tìm</button></form>
+<table class="table"><thead><tr><th>CCCD</th><th>Họ tên</th><th>SĐT</th><th>Thẻ</th><th></th></tr></thead><tbody>
+@foreach (var item in Model) {<tr><td>@item.Cccd</td><td>@item.FullName</td><td>@item.Phone</td><td>@item.MemberCard?.CardNumber</td><td><a asp-action="Details" asp-route-id="@item.CustomerId">Xem</a> | <a asp-action="Edit" asp-route-id="@item.CustomerId">Sửa</a></td></tr>}
+</tbody></table>

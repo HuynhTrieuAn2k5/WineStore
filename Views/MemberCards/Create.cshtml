@@ -1,0 +1,11 @@
+@model MemberCard
+@{ ViewData["Title"] = "Cấp thẻ"; }
+<h1>Cấp thẻ thành viên</h1>
+<form method="post" class="card form-grid">
+    <div><label asp-for="CustomerId"></label><select asp-for="CustomerId" asp-items="ViewBag.Customers"></select></div>
+    <div><label asp-for="CardType"></label><select asp-for="CardType"><option value="silver">Bạc</option><option value="gold">Vàng</option><option value="diamond">Kim cương</option></select></div>
+    <div><label asp-for="IssueDate"></label><input asp-for="IssueDate" type="date" /></div>
+    <div><label asp-for="ExpiryDate"></label><input asp-for="ExpiryDate" type="date" /></div>
+    <div><label asp-for="FeePaid"></label><input asp-for="FeePaid" /></div>
+    <button class="btn-primary" type="submit">Cấp thẻ</button>
+</form>

@@ -1,0 +1,61 @@
+@model ChilliquerAspNetCore.Models.Entities.Deposit
+@{ ViewData["Title"] = "Lập phiếu đặt cọc"; }
+
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <div class="card-header">
+        <h2>Lập phiếu đặt cọc</h2>
+    </div>
+    <form asp-action="Create" method="post" style="padding: 1.5rem;">
+        <input type="hidden" asp-for="InvoiceId" />
+        @if (ViewBag.Customers != null)
+        {
+            <div class="form-group">
+                <label asp-for="CustomerId">Khách hàng đặt cọc *</label>
+                <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control">
+                    <option value="">-- Chọn khách hàng --</option>
+                </select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" asp-for="CustomerId" />
+            <div class="form-group">
+                <label>Khách hàng</label>
+                <input type="text" class="form-control" value="@ViewBag.CustomerName" disabled />
+            </div>
+        }
+        
+        <div class="form-group">
+            <label>Hóa đơn</label>
+            <input type="text" class="form-control" value="@ViewBag.InvoiceNumber" disabled />
+        </div>
+
+        <div class="form-group">
+            <label>Tổng thanh toán hóa đơn</label>
+            <input type="text" class="form-control" value="@String.Format("{0:N0} đ", ViewBag.TotalAmount)" disabled />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DepositAmount">Số tiền cọc *</label>
+            <input asp-for="DepositAmount" type="number" class="form-control" />
+            <span asp-validation-for="DepositAmount" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ExpectedPickup">Ngày hẹn lấy *</label>
+            <input asp-for="ExpectedPickup" type="date" class="form-control" />
+            <span asp-validation-for="ExpectedPickup" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Note">Ghi chú</label>
+            <textarea asp-for="Note" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn-primary">Tạo phiếu đặt cọc</button>
+            <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn-outline">Hủy</a>
+        </div>
+    </form>
+</div>

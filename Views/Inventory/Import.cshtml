@@ -1,0 +1,13 @@
+@model ChilliquerAspNetCore.ViewModels.Inventory.StockImportViewModel
+@{ ViewData["Title"] = "Nhập kho"; }
+<h1>Nhập kho</h1>
+<form method="post" class="card form-grid">
+    <div class="col-span"><label asp-for="ProductId"></label><select asp-for="ProductId" asp-items="Model.Products"></select></div>
+    <div><label asp-for="LocationId"></label><select asp-for="LocationId" asp-items="Model.Locations"><option value="">-- Chưa chọn --</option></select></div>
+    <div><label asp-for="ImportPrice"></label><input asp-for="ImportPrice" /></div>
+    <div><label asp-for="QuantityIn"></label><input asp-for="QuantityIn" /></div>
+    <div><label asp-for="ManufactureYear"></label><input asp-for="ManufactureYear" /></div>
+    <div><label asp-for="ExpiryDate"></label><input asp-for="ExpiryDate" type="date" /></div>
+    <div class="col-span"><label asp-for="Note"></label><textarea asp-for="Note"></textarea></div>
+    <button class="btn-primary" type="submit">Lưu nhập kho</button>
+</form>

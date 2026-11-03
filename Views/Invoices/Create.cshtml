@@ -1,0 +1,93 @@
+@model ChilliquerAspNetCore.ViewModels.Invoices.CreateInvoiceViewModel
+@{ ViewData["Title"] = "Lập hóa đơn"; }
+<h1>Lập hóa đơn</h1>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" style="color:red; margin-bottom:1rem;">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+}
+<form method="post" class="card form-grid" id="invoiceForm">
+    <div><label asp-for="CustomerName"></label><input asp-for="CustomerName" /></div>
+    <div><label asp-for="CardId"></label><select asp-for="CardId" asp-items="Model.MemberCards"><option value="">Khách vãng lai</option></select></div>
+    
+    <div class="col-span">
+        <label>Danh sách sản phẩm</label>
+        <table class="table" id="itemsTable">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="itemsBody">
+                <tr class="item-row">
+                    <td>
+                        <select class="product-select" asp-items="Model.Products"></select>
+                    </td>
+                    <td>
+                        <input type="number" class="qty-input" value="1" min="1" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn-link" style="color:red;" onclick="removeRow(this)">Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn-outline" onclick="addRow()" style="margin-top: 10px;">+ Thêm sản phẩm</button>
+    </div>
+
+    <div><label asp-for="PaymentMethod"></label><select asp-for="PaymentMethod"><option value="cash">Tiền mặt</option><option value="transfer">Chuyển khoản</option><option value="card">Thẻ</option></select></div>
+    <div class="col-span"><label asp-for="Note"></label><textarea asp-for="Note"></textarea></div>
+    <button class="btn-primary" type="submit" onclick="prepareSubmit()">Thanh toán</button>
+</form>
+
+@section Scripts {
+    <script>
+        function addRow() {
+            const tbody = document.getElementById('itemsBody');
+            const row = tbody.querySelector('.item-row');
+            if(row) {
+                const newRow = row.cloneNode(true);
+                newRow.querySelector('.qty-input').value = 1;
+                tbody.appendChild(newRow);
+            }
+        }
+        function removeRow(btn) {
+            const row = btn.closest('tr');
+            if(document.querySelectorAll('.item-row').length > 1) {
+                row.remove();
+            } else {
+                alert("Phải có ít nhất 1 sản phẩm.");
+            }
+        }
+        function prepareSubmit() {
+            const rows = document.querySelectorAll('.item-row');
+            const form = document.getElementById('invoiceForm');
+            
+            // Remove old hidden inputs
+            document.querySelectorAll('.dynamic-input').forEach(e => e.remove());
+            
+            rows.forEach((row, index) => {
+                const productId = row.querySelector('.product-select').value;
+                const qty = row.querySelector('.qty-input').value;
+                
+                const inputId = document.createElement('input');
+                inputId.type = 'hidden';
+                inputId.name = `Items[${index}].ProductId`;
+                inputId.value = productId;
+                inputId.className = 'dynamic-input';
+                
+                const inputQty = document.createElement('input');
+                inputQty.type = 'hidden';
+                inputQty.name = `Items[${index}].Quantity`;
+                inputQty.value = qty;
+                inputQty.className = 'dynamic-input';
+                
+                form.appendChild(inputId);
+                form.appendChild(inputQty);
+            });
+        }
+    </script>
+}

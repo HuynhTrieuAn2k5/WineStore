@@ -1,0 +1,75 @@
+@{
+    var fullName = Context.Session.GetString("FullName");
+    var roleName = Context.Session.GetString("RoleName");
+    var isLoggedIn = !string.IsNullOrWhiteSpace(Context.Session.GetString("UserId"));
+    var isAdmin = string.Equals(roleName, "admin", StringComparison.OrdinalIgnoreCase);
+    var isManager = string.Equals(roleName, "manager", StringComparison.OrdinalIgnoreCase);
+    var isSales = string.Equals(roleName, "sales", StringComparison.OrdinalIgnoreCase);
+    var roleDisplayName = roleName switch
+    {
+        "admin" => "Quản trị hệ thống",
+        "manager" => "Quản lý",
+        "sales" => "Nhân viên bán hàng",
+        "customer" => "Khách hàng",
+        _ => roleName
+    };
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Chilliquer</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        @if (isLoggedIn)
+        {
+            <aside class="sidebar">
+                <div class="brand"><span>🍷</span><strong>Chilliquer</strong></div>
+                <nav>
+                    <a asp-controller="Dashboard" asp-action="Index">Tổng quan</a>
+                    <a asp-controller="Products" asp-action="Index">Sản phẩm</a>
+                    @if (isAdmin || isManager)
+                    {
+                        <a asp-controller="Inventory" asp-action="Index">Kho hàng</a>
+                    }
+                    <a asp-controller="Customers" asp-action="Index">Khách hàng</a>
+                    <a asp-controller="MemberCards" asp-action="Index">Thẻ thành viên</a>
+                    <a asp-controller="Invoices" asp-action="Index">Hóa đơn</a>
+                    <a asp-controller="Deposits" asp-action="Index">Đặt cọc</a>
+                    <a asp-controller="Returns" asp-action="Index">Đổi / trả</a>
+                    @if (isAdmin || isManager)
+                    {
+                        <a asp-controller="Reports" asp-action="Index">Báo cáo</a>
+                    }
+                </nav>
+            </aside>
+        }
+        <main class="main">
+            @if (isLoggedIn)
+            {
+                <header class="topbar">
+                    <div>
+                        <strong>@fullName</strong>
+                        <span class="role">@roleDisplayName</span>
+                    </div>
+                    <a class="logout" asp-controller="Auth" asp-action="Logout">Đăng xuất</a>
+                </header>
+            }
+            else
+            {
+                <header class="topbar">
+                    <div class="brand" style="margin-bottom: 0;"><span>🍷</span><strong>Chilliquer</strong></div>
+                    <a class="btn-primary" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
+                </header>
+            }
+            <section class="content">
+                @RenderBody()
+            </section>
+        </main>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

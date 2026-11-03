@@ -1,0 +1,6 @@
+@model IEnumerable<Invoice>
+@{ ViewData["Title"] = "Hóa đơn"; }
+<div class="page-title"><h1>Hóa đơn</h1><a class="btn-primary" asp-action="Create">Lập hóa đơn</a></div>
+<table class="table"><thead><tr><th>Số HĐ</th><th>Ngày</th><th>Khách hàng</th><th>Thu ngân</th><th>Tổng tiền</th><th></th></tr></thead><tbody>
+@foreach (var item in Model) {<tr><td>@item.InvoiceNumber</td><td>@item.SaleDate.ToString("dd/MM/yyyy HH:mm")</td><td>@item.CustomerName</td><td>@item.Cashier?.FullName</td><td>@String.Format("{0:N0} đ", item.TotalAmount)</td><td><a asp-action="Details" asp-route-id="@item.InvoiceId">Xem</a></td></tr>}
+</tbody></table>

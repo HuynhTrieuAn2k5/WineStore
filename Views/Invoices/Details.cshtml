@@ -1,0 +1,15 @@
+@model Invoice
+@{ ViewData["Title"] = "Chi tiết hóa đơn"; }
+<div class="card">
+<h1>Hóa đơn @Model.InvoiceNumber</h1>
+<p><b>Khách hàng:</b> @Model.CustomerName</p><p><b>Thu ngân:</b> @Model.Cashier?.FullName</p><p><b>Ngày bán:</b> @Model.SaleDate.ToString("dd/MM/yyyy HH:mm")</p>
+<table class="table"><thead><tr><th>Sản phẩm</th><th>Giá</th><th>SL</th><th>Thành tiền</th></tr></thead><tbody>
+@foreach (var item in Model.Items) {<tr><td>@item.ProductName</td><td>@String.Format("{0:N0}", item.UnitPrice)</td><td>@item.Quantity</td><td>@String.Format("{0:N0}", item.Subtotal)</td></tr>}
+</tbody></table>
+<h2>Tổng thanh toán: @String.Format("{0:N0} đ", Model.TotalAmount)</h2>
+
+<div style="margin-top: 20px;">
+    <a asp-controller="Deposits" asp-action="Create" asp-route-invoiceId="@Model.InvoiceId" class="btn-primary" style="margin-right: 10px;">Lập phiếu đặt cọc</a>
+    <a asp-controller="Returns" asp-action="Create" asp-route-invoiceId="@Model.InvoiceId" class="btn-primary" style="background-color: #dc3545;">Đổi/trả hàng</a>
+</div>
+</div>

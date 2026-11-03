@@ -1,0 +1,73 @@
+@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Sản phẩm";
+    var roleName = Context.Session.GetString("RoleName");
+    var canManageProducts = string.Equals(roleName, "admin", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(roleName, "manager", StringComparison.OrdinalIgnoreCase);
+    var isLoggedIn = !string.IsNullOrEmpty(Context.Session.GetString("UserId"));
+}
+<div class="card">
+    <div class="card-header">
+        <h1>Sản phẩm</h1>
+        <form method="get" class="toolbar">
+            <input name="keyword" value="@ViewBag.Keyword" placeholder="Tìm mã hoặc tên sản phẩm..." />
+            <select name="categoryId" style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 12px;">
+                <option value="">-- Tất cả danh mục --</option>
+                @foreach (var cat in ViewBag.Categories)
+                {
+                    if (ViewBag.CategoryId != null && (int)ViewBag.CategoryId == cat.CategoryId)
+                    {
+                        <option value="@cat.CategoryId" selected>@cat.CategoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.CategoryId">@cat.CategoryName</option>
+                    }
+                }
+            </select>
+            <button class="btn-primary">Tìm &amp; Lọc</button>
+            @if (canManageProducts)
+            {
+                <a class="btn-primary" asp-action="Create">Thêm sản phẩm</a>
+            }
+        </form>
+    </div>
+</div>
+<div class="product-grid">
+    @foreach (var item in Model)
+    {
+        <div class="product-card">
+            @if (!string.IsNullOrEmpty(item.ImageUrl))
+            {
+                <img src="@item.ImageUrl" alt="@item.Name" class="product-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                <div class="product-img-placeholder" style="display:none;">🍷</div>
+            }
+            else
+            {
+                <div class="product-img-placeholder">🍷</div>
+            }
+            <div class="product-info">
+                <h3>@item.Name</h3>
+                <div class="product-category">@item.Category?.CategoryName</div>
+                <div class="product-price">@String.Format("{0:N0} đ", item.SellPrice)</div>
+                <div class="product-actions">
+                    <a class="btn-outline" asp-action="Details" asp-route-id="@item.ProductId">Xem</a>
+                    @if (isLoggedIn)
+                    {
+                        <a class="btn-primary" asp-action="Buy" asp-route-id="@item.ProductId">Mua</a>
+                    }
+                    else
+                    {
+                        <a class="btn-primary" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Url.Action("Buy", "Products", new { id = item.ProductId })">Mua</a>
+                    }
+                </div>
+                @if (canManageProducts)
+                {
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" style="font-size: 0.9rem;">Sửa sản phẩm</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

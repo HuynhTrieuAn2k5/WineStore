@@ -1,0 +1,85 @@
+@model ChilliquerAspNetCore.ViewModels.Returns.CreateReturnViewModel
+@{ ViewData["Title"] = "Lập phiếu đổi trả"; }
+
+<div class="card" style="max-width: 800px; margin: 2rem auto;">
+    <div class="card-header">
+        <h2>Lập phiếu đổi/trả hàng</h2>
+    </div>
+    
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" style="color:red; padding: 1rem;">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+    }
+
+    <form asp-action="Create" method="post" style="padding: 1.5rem;">
+        <input type="hidden" asp-for="InvoiceId" />
+        
+        <div class="form-group" style="display:flex; gap:1rem;">
+            <div style="flex:1;">
+                <label>Hóa đơn</label>
+                <input type="text" class="form-control" value="@Model.InvoiceNumber" disabled />
+            </div>
+            <div style="flex:1;">
+                <label>Khách hàng</label>
+                <input type="text" class="form-control" value="@Model.CustomerName" disabled />
+            </div>
+        </div>
+
+        <div class="form-group" style="display:flex; gap:1rem; margin-top: 1rem;">
+            <div style="flex:1;">
+                <label asp-for="ReturnType">Loại yêu cầu *</label>
+                <select asp-for="ReturnType" class="form-control">
+                    <option value="return">Trả hàng hoàn tiền</option>
+                    <option value="exchange">Đổi hàng</option>
+                </select>
+            </div>
+            <div style="flex:1;">
+                <label asp-for="Reason">Lý do</label>
+                <input asp-for="Reason" class="form-control" />
+            </div>
+        </div>
+
+        <h3 style="margin-top: 1.5rem;">Sản phẩm cần đổi/trả</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Đã mua</th>
+                    <th>Giá</th>
+                    <th style="width:120px;">SL Trả</th>
+                    <th>Tình trạng OK?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input type="hidden" asp-for="Items[i].ItemId" />
+                            <input type="hidden" asp-for="Items[i].ProductId" />
+                            <input type="hidden" asp-for="Items[i].ProductName" />
+                            <input type="hidden" asp-for="Items[i].UnitPrice" />
+                            <input type="hidden" asp-for="Items[i].MaxQuantity" />
+                            @Model.Items[i].ProductName
+                        </td>
+                        <td>@Model.Items[i].MaxQuantity</td>
+                        <td>@String.Format("{0:N0}", Model.Items[i].UnitPrice)</td>
+                        <td>
+                            <input type="number" asp-for="Items[i].ReturnQuantity" class="form-control" min="0" max="@Model.Items[i].MaxQuantity" />
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" asp-for="Items[i].ConditionOk" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn-primary" style="background-color: #dc3545;">Xác nhận Đổi/Trả</button>
+            <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn-outline">Hủy</a>
+        </div>
+    </form>
+</div>

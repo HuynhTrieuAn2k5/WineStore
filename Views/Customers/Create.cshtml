@@ -1,0 +1,13 @@
+@model Customer
+@{ ViewData["Title"] = "Thêm khách hàng"; }
+<h1>Thêm khách hàng</h1>
+<form method="post" class="card form-grid">
+    <div><label asp-for="Cccd"></label><input asp-for="Cccd" /></div>
+    <div><label asp-for="FullName"></label><input asp-for="FullName" /></div>
+    <div><label asp-for="DateOfBirth"></label><input asp-for="DateOfBirth" type="date" /></div>
+    <div><label asp-for="Gender"></label><select asp-for="Gender"><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Khác</option></select></div>
+    <div><label asp-for="Phone"></label><input asp-for="Phone" /></div>
+    <div><label asp-for="Email"></label><input asp-for="Email" /></div>
+    <div class="col-span"><label asp-for="Address"></label><input asp-for="Address" /></div>
+    <button class="btn-primary" type="submit">Lưu</button>
+</form>

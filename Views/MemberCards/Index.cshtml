@@ -1,0 +1,6 @@
+@model IEnumerable<MemberCard>
+@{ ViewData["Title"] = "Thẻ thành viên"; }
+<div class="page-title"><h1>Thẻ thành viên</h1><a class="btn-primary" asp-action="Create">Cấp thẻ</a></div>
+<table class="table"><thead><tr><th>Số thẻ</th><th>Khách hàng</th><th>Loại</th><th>Hết hạn</th><th>Trạng thái</th><th></th></tr></thead><tbody>
+@foreach (var item in Model) {<tr><td>@item.CardNumber</td><td>@item.Customer?.FullName</td><td>@item.CardType</td><td>@item.ExpiryDate.ToString("dd/MM/yyyy")</td><td>@item.Status</td><td><a asp-action="Edit" asp-route-id="@item.CardId">Sửa</a> | <form asp-action="Delete" asp-route-id="@item.CardId" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thẻ này?');"><button type="submit" class="btn-link" style="color:red; border:none; background:none; cursor:pointer; padding:0; text-decoration:underline;">Xóa</button></form></td></tr>}
+</tbody></table>

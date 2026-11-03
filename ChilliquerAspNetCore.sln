@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilliquerAspNetCore", "ChilliquerAspNetCore.csproj", "{19361C80-5C11-5515-6453-F3D5D0265F53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19361C80-5C11-5515-6453-F3D5D0265F53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19361C80-5C11-5515-6453-F3D5D0265F53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19361C80-5C11-5515-6453-F3D5D0265F53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19361C80-5C11-5515-6453-F3D5D0265F53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C12AF54-206D-4790-82C1-FFC7A991910C}
+	EndGlobalSection
+EndGlobal
